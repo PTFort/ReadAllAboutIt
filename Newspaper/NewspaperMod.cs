@@ -30,8 +30,7 @@ namespace Newspaper
 			UIView uiView = UIView.GetAView ();
 
 			//this adds an UIComponent to the view
-			//UIComponent uic = 
-			//	uiView.AddUIComponent (typeof(ExamplePanel));
+			//UIComponent uic = uiView.AddUIComponent (typeof(NewspaperPanel));
 
 			// Add a new button to the view.
 			var button = (UIButton)uiView.AddUIComponent(typeof(UIButton));
@@ -61,7 +60,7 @@ namespace Newspaper
 			UIComponent escbutton = uiView.FindUIComponent("Esc");
 			button.relativePosition = new Vector2
 				(
-					escbutton.relativePosition.x + escbutton.width / 2.0f - button.width / 2.0f - escbutton.width - 8.0f,
+					escbutton.relativePosition.x - escbutton.width / 2.0f - button.width / 2.0f - escbutton.width - 20.0f,
 					escbutton.relativePosition.y + escbutton.height / 2.0f - button.height / 2.0f
 				);
 			

@@ -11,7 +11,7 @@ namespace Newspaper
 
 		//text that should be detected automatically
 		//or stored in a config file
-		static string cityName = "Sunshine Town";
+		public static string cityName = "Sunshine Town";
 		static string[] districts = {"Poplar Hills", "Hemlock Hills"};
 		static string mayorpossess = "his";
 		static string mayorname = "McMayor";
@@ -37,7 +37,7 @@ namespace Newspaper
 
 
 		//parse this string
-		string parse(string s)
+		public string parse(string s)
 		{
 			string returnString = "";
 			for (int i = 0; i < s.Length; i++)
@@ -314,19 +314,22 @@ namespace Newspaper
 				//walked, bought, changed, etc.
 				else if (op == "PAST")
 				{
-					if (token == "spot")
+					if (token.ToLower() == "spot")
 						token += "t";
-					else if (token == "buy")
+					else if (token.ToLower() == "buy")
 						return "bought";
-					else if (token == "run")
+					else if (token.ToLower() == "run")
 						return "ran";
-					else if (token == "eat")
+					else if (token.ToLower() == "eat")
 						return "ate";
-					else if (token == "sell")
+					else if (token.ToLower() == "sell")
 						return "sold";
-					else if (token.EndsWith("e"))
-						token = token.Remove(token.Length-1);
-
+					else if (token.EndsWith ("e"))
+						token = token.Remove (token.Length - 1);
+					else if (token.EndsWith ("y")) {
+						token = token.Remove (token.Length - 1);
+						token += "i";
+					}
 					token += "ed";
 				}
 
@@ -334,9 +337,9 @@ namespace Newspaper
 				//running, cooking, throwing, etc.
 				else if (op == "ING")
 				{
-					if (token == "spot")
+					if (token.ToLower() == "spot")
 						token += "t";
-					else if (token == "run")
+					else if (token.ToLower() == "run")
 						return "running";
 					else if (token.EndsWith("e"))
 						token = token.Remove(token.Length-1);

@@ -4,6 +4,7 @@ using ColossalFramework;
 using Newspaper;
 using UnityEngine;
 using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 
 namespace Newspaper
 {
@@ -13,21 +14,67 @@ namespace Newspaper
 		public static Newspaper instance;
 
 		public bool show = false;
-		private Rect windowRect = new Rect(64, 64, 350, 370);
+		private Rect windowRect = new Rect(64, 64, 1024, 1024);
 
 		Story s;
+		GUISkin skin;
+
 
 		public static void Initialize()
 		{
 			var controller = GameObject.FindObjectOfType<CameraController>();
 			instance = controller.gameObject.AddComponent<Newspaper>();
+
+			//TODO: Move this to NewspaperSkin
+
 		}
 
 		void OnGUI()
 		{
 			if (show)
 			{	
-				windowRect = GUI.Window(31521, windowRect, DoConfigWindow, "Newspaper");
+
+				Texture2D bgTexture;
+				bgTexture = new Texture2D(3, 3);
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 3; j++) {
+						bgTexture.SetPixel(i, j, Color.black);
+					}
+				}
+				bgTexture.SetPixel(1, 1, Color.black);
+				bgTexture.Apply();
+
+
+				skin = ScriptableObject.CreateInstance<GUISkin>();
+				skin.box = new GUIStyle(GUI.skin.box);
+				skin.button = new GUIStyle(GUI.skin.button);
+				skin.horizontalScrollbar = new GUIStyle(GUI.skin.horizontalScrollbar);
+				skin.horizontalScrollbarLeftButton = new GUIStyle(GUI.skin.horizontalScrollbarLeftButton);
+				skin.horizontalScrollbarRightButton = new GUIStyle(GUI.skin.horizontalScrollbarRightButton);
+				skin.horizontalScrollbarThumb = new GUIStyle(GUI.skin.horizontalScrollbarThumb);
+				skin.horizontalSlider = new GUIStyle(GUI.skin.horizontalSlider);
+				skin.horizontalSliderThumb = new GUIStyle(GUI.skin.horizontalSliderThumb);
+				skin.label = new GUIStyle(GUI.skin.label);
+				skin.scrollView = new GUIStyle(GUI.skin.scrollView);
+				skin.textArea = new GUIStyle(GUI.skin.textArea);
+				skin.textField = new GUIStyle(GUI.skin.textField);
+				skin.toggle = new GUIStyle(GUI.skin.toggle);
+				skin.verticalScrollbar = new GUIStyle(GUI.skin.verticalScrollbar);
+				skin.verticalScrollbarDownButton = new GUIStyle(GUI.skin.verticalScrollbarDownButton);
+				skin.verticalScrollbarThumb = new GUIStyle(GUI.skin.verticalScrollbarThumb);
+				skin.verticalScrollbarUpButton = new GUIStyle(GUI.skin.verticalScrollbarUpButton);
+				skin.verticalSlider = new GUIStyle(GUI.skin.verticalSlider);
+				skin.verticalSliderThumb = new GUIStyle(GUI.skin.verticalSliderThumb);
+				skin.window = new GUIStyle(GUI.skin.window);
+				skin.window.normal.background = bgTexture;
+				skin.window.onNormal.background = bgTexture;
+
+
+				GUISkin oldSkin = GUI.skin;
+
+				GUI.skin = skin;
+				windowRect = GUILayout.Window(31521, windowRect, DoConfigWindow, "The " + Parser.cityName + " Times");
+				GUI.skin = oldSkin;
 			}
 		}
 
@@ -45,9 +92,20 @@ namespace Newspaper
 			
 		public void DoConfigWindow(int wnd)
 		{
+			Texture2D headlineTexture;
+			headlineTexture = new Texture2D(1, 1);
+			headlineTexture.SetPixel(0, 0, Color.white);
+			headlineTexture.Apply();
+
+
+			GUILayout.ExpandHeight (true);
+			GUILayout.ExpandWidth (true);
+
+
 			GUILayout.Label(s.headline);
 			GUILayout.Label("-" + s.reporter);
 			GUILayout.Label(s.text);
+
 		}
 	}
 } 
