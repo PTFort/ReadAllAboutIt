@@ -17,7 +17,6 @@ namespace Newspaper
 	public class LoadingExtension : LoadingExtensionBase
 	{
 
-		public Rect windowRect = new Rect(64, 64, 350, 170);
 
 		public override void OnLevelLoaded(LoadMode mode)
 		{
@@ -57,13 +56,16 @@ namespace Newspaper
 			// Enable button sounds.
 			button.playAudioEvents = true;
 
-			UIComponent escbutton = uiView.FindUIComponent("Esc");
-			button.relativePosition = new Vector2
-				(
-					escbutton.relativePosition.x - escbutton.width / 2.0f - button.width / 2.0f - escbutton.width - 20.0f,
-					escbutton.relativePosition.y + escbutton.height / 2.0f - button.height / 2.0f
-				);
-			
+//			UIComponent escbutton = uiView.FindUIComponent("Esc");
+//			button.relativePosition = new Vector2
+//				(
+//					escbutton.relativePosition.x - escbutton.width / 2.0f - button.width / 2.0f - escbutton.width - 20.0f,
+//					escbutton.relativePosition.y + escbutton.height / 2.0f - button.height / 2.0f
+//				);
+
+
+			button.transformPosition = new Vector3(0.9f, -0.70f);
+			button.BringToFront();
 
 			// Respond to button click.
 			button.eventClick += ButtonClick; 

@@ -322,6 +322,8 @@ namespace Newspaper
 						return "ran";
 					else if (token.ToLower() == "eat")
 						return "ate";
+					else if (token.ToLower() == "bite")
+						return "bit";
 					else if (token.ToLower() == "sell")
 						return "sold";
 					else if (token.EndsWith ("e"))
@@ -352,7 +354,12 @@ namespace Newspaper
 				{
 					if (token.EndsWith("s"))
 						token += "e";
-
+					else if (token.EndsWith("y"))
+					{
+						token = token.Remove(token.Length-1);
+						return token + "ies";
+					}
+					
 					token += "s";
 				}
 				else
