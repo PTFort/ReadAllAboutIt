@@ -12,7 +12,7 @@ namespace Newspaper
 		//text that should be detected automatically
 		//or stored in a config file
 		public static string cityName = "Sunshine Town";
-		static string[] districts = {"Poplar Hills", "Hemlock Hills"};
+		public static string[] districts = {"Poplar Hills", "Hemlock Hills"};
 		static string mayorpossess = "his";
 		static string mayorname = "McMayor";
 

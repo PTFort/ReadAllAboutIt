@@ -3,6 +3,9 @@ using UnityEngine;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
 using System.Reflection;
+using System;
+using System.Collections;
+using Newspaper;
 
 //taken from https://github.com/AlexanderDzhoganov/Skylines-DynamicResolution/
 
@@ -70,13 +73,61 @@ namespace Newspaper
 			// Respond to button click.
 			button.eventClick += ButtonClick; 
 
-			Newspaper.Initialize();
+
+			NewspaperObj.Initialize();
+
+
+			//get the name of the city
+			Parser.cityName = CityInfoPanel.instance.GetCityName();
+
+
+			//get the names of any districts in the city
+			DistrictManager dm = DistrictManager.instance;
+
+			int dCount = 0;
+			uint maxDCount = dm.m_districts.m_size;
+
+			Debug.Log ("District maxDCount: " + maxDCount);
+
+//			Debug.Log ("District count: " + dCount);
+
+
+			for (int i = 0; i < maxDCount; i++) {
+				String d = dm.GetDistrictName(i);
+				if (d != null && ! d.Equals ("")) {
+					dCount += 1;
+				}
+			}
+
+			//Debug.Log ("District Size: " + dCount);
+				
+			if (dCount > 0) {
+				
+				string[] dNameArr = new string[dCount];
+				int index = 0;
+
+				//TODO: Make this not run through the list twice
+				for (int i = 0; i < maxDCount; i++) {
+					String d = dm.GetDistrictName (i);
+					//Debug.Log ("District: " + d);
+					if (d != null && ! d.Equals ("")) {
+						dNameArr [index] = d;
+						index += 1;
+					}
+
+				}
+						
+				Parser.districts = dNameArr;
+			}
+
 
 		}
 		private void ButtonClick(UIComponent component, UIMouseEventParameter eventParam)
 		{
-			Newspaper.Toggle();
+			NewspaperObj.Toggle();
 		} 
+
+	
 
 	}
 		

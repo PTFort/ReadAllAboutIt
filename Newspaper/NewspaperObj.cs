@@ -8,10 +8,10 @@ using ColossalFramework.UI;
 
 namespace Newspaper
 {
-	public class Newspaper : MonoBehaviour
+	public class NewspaperObj : MonoBehaviour
 	{
 
-		public static Newspaper instance;
+		public static NewspaperObj instance;
 
 		public bool show = false;
 		private Rect windowRect;
@@ -25,8 +25,11 @@ namespace Newspaper
 
 		public static void Initialize()
 		{
-			var controller = GameObject.FindObjectOfType<CameraController>();
-			instance = controller.gameObject.AddComponent<Newspaper>();
+
+			UIView uiView = UIView.GetAView ();
+			//uiView.gameObject
+			//var controller = GameObject.FindObjectOfType<CameraController>();
+			instance = uiView.gameObject.AddComponent<NewspaperObj>();
 
 			//TODO: Move this to NewspaperSkin
 
