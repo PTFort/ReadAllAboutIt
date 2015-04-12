@@ -314,10 +314,12 @@ namespace Newspaper
 				//walked, bought, changed, etc.
 				else if (op == "PAST")
 				{
-					if (token.ToLower() == "spot")
+					if (token.ToLower () == "spot")
 						token += "t";
-					else if (token.ToLower() == "buy")
+					else if (token.ToLower () == "buy")
 						return "bought";
+					else if (token.ToLower () == "throw")
+						return "threw";
 					else if (token.ToLower() == "run")
 						return "ran";
 					else if (token.ToLower() == "eat")

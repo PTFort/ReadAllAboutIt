@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using ColossalFramework.UI;
 using System;
+using Newspaper;
 
 namespace Newspaper
 {
@@ -16,7 +17,7 @@ namespace Newspaper
 			bgTexture.Apply();
 
 
-			skin =  new GUISkin();
+			skin = ScriptableObject.CreateInstance<GUISkin>();
 			skin.box = new GUIStyle(GUI.skin.box);
 			skin.button = new GUIStyle(GUI.skin.button);
 			skin.horizontalScrollbar = new GUIStyle(GUI.skin.horizontalScrollbar);
@@ -26,6 +27,14 @@ namespace Newspaper
 			skin.horizontalSlider = new GUIStyle(GUI.skin.horizontalSlider);
 			skin.horizontalSliderThumb = new GUIStyle(GUI.skin.horizontalSliderThumb);
 			skin.label = new GUIStyle(GUI.skin.label);
+
+			Texture2D texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+			texture.SetPixel(0, 0, new Color(0.98f, 0.98f, 0.98f, 0.98f));
+			texture.Apply();
+
+			//labelStyle = new GUIStyle { fontSize = 12, wordWrap = true, normal = new GUIStyleState { textColor = Color.black, background = texture } };
+			//headlineStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, fontSize = 18, wordWrap = true, normal = new GUIStyleState { textColor = Color.black, background = texture } };
+
 			skin.scrollView = new GUIStyle(GUI.skin.scrollView);
 			skin.textArea = new GUIStyle(GUI.skin.textArea);
 			skin.textField = new GUIStyle(GUI.skin.textField);
@@ -37,8 +46,8 @@ namespace Newspaper
 			skin.verticalSlider = new GUIStyle(GUI.skin.verticalSlider);
 			skin.verticalSliderThumb = new GUIStyle(GUI.skin.verticalSliderThumb);
 			skin.window = new GUIStyle(GUI.skin.window);
-			skin.window.normal.background = bgTexture;
-			skin.window.onNormal.background = bgTexture;
+			skin.window.normal.background = texture;
+			skin.window.onNormal.background = texture;
 
 		}
 	}

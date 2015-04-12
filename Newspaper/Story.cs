@@ -12,6 +12,14 @@ namespace Newspaper
         public string reporter;
         public string text;
 
+		public string poll;
+		public string qotd;
+
+		public string weather;
+		public string otherArticle1;
+		public string otherArticle2;
+
+
         Parser p;
 
         public Story()
@@ -25,7 +33,7 @@ namespace Newspaper
             t += Data.templates[index];
 
 			//get the number of the fragments
-            int numFragments = random.Next(3);
+            int numFragments = random.Next(3) + 1;
 
 			//add fragments, but don't repeat them
             ArrayList fragsSelected = new ArrayList();
@@ -41,7 +49,15 @@ namespace Newspaper
             }
 
 			//parse the whole story
-            string parsedString = p.parse (t);
+			string parsedString;
+
+			try
+			{
+				parsedString = p.parse (t);
+			}
+			catch(Exception e) {
+				parsedString = t + "\nError parsing.";
+			}
 
 			//the headline is everything before the equals sign
             char[] delim = new char[] { '=' };
@@ -52,7 +68,27 @@ namespace Newspaper
             text = sArr[1];
             reporter = "Written by: " + Data.reporters[random.Next(Data.reporters.Length)];
 
+			poll = p.parse(Data.polls[random.Next(Data.polls.Length)]);
+			qotd = p.parse(Data.qotds[random.Next(Data.qotds.Length)]);
+
+			weather = Data.weather [random.Next (Data.weather.Length)];
+			otherArticle1 = getOtherArticle ();
+			otherArticle2 = getOtherArticle ();
         }
+
+
+		public string getOtherArticle()
+		{
+			string oa = "";
+
+			try{
+				oa = Data.otherArticles [random.Next (Data.otherArticles.Length)];
+				return p.parse(oa);
+			}
+			catch(Exception e) {
+				return e.Message + oa;
+			}
+		}
 
 		//print all the templates and all the fragments to test the parsing
         public string testAll()

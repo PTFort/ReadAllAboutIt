@@ -21,6 +21,7 @@ namespace Newspaper
 	{
 
 
+
 		public override void OnLevelLoaded(LoadMode mode)
 		{
 			if (mode != LoadMode.NewGame && mode != LoadMode.LoadGame)
@@ -38,7 +39,7 @@ namespace Newspaper
 			var button = (UIButton)uiView.AddUIComponent(typeof(UIButton));
 
 			// Set the text to show on the button.
-			button.text = "Toggle Newspaper";
+			button.text = "Show Newspaper";
 
 			// Set the button dimensions.
 			button.width = 200;
@@ -69,63 +70,97 @@ namespace Newspaper
 
 			button.transformPosition = new Vector3(0.9f, -0.70f);
 			button.BringToFront();
-
-			// Respond to button click.
-			button.eventClick += ButtonClick; 
+			button.eventClick += Newspaper.Toggle; 
 
 
-			NewspaperObj.Initialize();
+			try
+			{
+				//uiView = UIView.GetAView ();
+				//uiView.gameObject
+
+				//uiView = UIView.GetAView ();//hook = uiView.gameObject.AddComponent<Hook>();
+
+				//var controller = GameObject.FindObjectOfType<CameraController>();
+
+//				if (uiView == null)
+//					Debug.Log ("uiView is null");
+//
+//				if (uiView.gameObject == null)
+//					Debug.Log ("uiView.gameObject is null");
+//
+//				NewspaperObj nObj = uiView.gameObject.AddComponent<NewspaperObj>();
+//
+//				if (nObj == null)
+//					Debug.Log ("nObj is null");
+
+				uiView = UIView.GetAView ();//hook = uiView.gameObject.AddComponent<Hook>();
+
+				Newspaper.instance = uiView.gameObject.AddComponent<Newspaper>();
 
 
-			//get the name of the city
-			Parser.cityName = CityInfoPanel.instance.GetCityName();
+				if (Newspaper.instance == null)
+					Debug.Log ("instance is null!!!");
 
 
-			//get the names of any districts in the city
-			DistrictManager dm = DistrictManager.instance;
+				//Newspaper.NewspaperObj.Initialize();
 
-			int dCount = 0;
-			uint maxDCount = dm.m_districts.m_size;
-
-			Debug.Log ("District maxDCount: " + maxDCount);
-
-//			Debug.Log ("District count: " + dCount);
+				// Respond to button click.
 
 
-			for (int i = 0; i < maxDCount; i++) {
-				String d = dm.GetDistrictName(i);
-				if (d != null && ! d.Equals ("")) {
-					dCount += 1;
-				}
+				//NewspaperObj.Initialize();
+			}catch (Exception e) {
+				Debug.Log (e.Message);
+				Debug.Log (e.StackTrace);
 			}
 
-			//Debug.Log ("District Size: " + dCount);
-				
-			if (dCount > 0) {
-				
-				string[] dNameArr = new string[dCount];
-				int index = 0;
 
-				//TODO: Make this not run through the list twice
+
+
+
+			try
+			{
+				//get the names of any districts in the city
+				DistrictManager dm = DistrictManager.instance;
+
+				int dCount = 0;
+				uint maxDCount = dm.m_districts.m_size;
+
+				//Debug.Log ("District maxDCount: " + maxDCount);
+
 				for (int i = 0; i < maxDCount; i++) {
-					String d = dm.GetDistrictName (i);
-					//Debug.Log ("District: " + d);
+					String d = dm.GetDistrictName(i);
 					if (d != null && ! d.Equals ("")) {
-						dNameArr [index] = d;
-						index += 1;
+						dCount += 1;
 					}
-
 				}
-						
-				Parser.districts = dNameArr;
-			}
 
+				//Debug.Log ("District Size: " + dCount);
+					
+				if (dCount > 0) {
+					
+					string[] dNameArr = new string[dCount];
+					int index = 0;
+
+					//TODO: Make this not run through the list twice
+					for (int i = 0; i < maxDCount; i++) {
+						String d = dm.GetDistrictName (i);
+						//Debug.Log ("District: " + d);
+						if (d != null && ! d.Equals ("")) {
+							dNameArr [index] = d;
+							index += 1;
+						}
+					}
+					Parser.districts = dNameArr;
+				}
+
+			}catch (Exception e) {
+				Debug.Log ("Error in detecting district names");
+				Debug.Log (e.Message);
+				Debug.Log (e.StackTrace);
+			}
 
 		}
-		private void ButtonClick(UIComponent component, UIMouseEventParameter eventParam)
-		{
-			NewspaperObj.Toggle();
-		} 
+
 
 	
 
