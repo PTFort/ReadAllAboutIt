@@ -8,11 +8,11 @@ using ColossalFramework.UI;
 
 namespace Newspaper
 {
-	public class Newspaper : MonoBehaviour
+	public class NewspaperPage2 : MonoBehaviour
 	{
 		public static System.Random random = new System.Random();
 
-		public static Newspaper instance;
+		public static NewspaperPage2 instance;
 		public static bool b = true;
 		public bool show = false;
 		private Rect windowRect;
@@ -33,7 +33,12 @@ namespace Newspaper
 		Texture2D bannerBoxes;
 		GUIStyle bannerBoxStyle;
 
+		//TODO: Add picture back in
+		//Texture2D photoTexture;
+		//int photoWidth;
+		//int photoHeight;
 
+		string date;
 
 		void Awake()
 		{
@@ -41,8 +46,11 @@ namespace Newspaper
 
 			//TODO: Move this to NewspaperSkin
 
-			float w = 0.9f; // proportional width (0..1)
-			float h = 0.5f; // proportional height (0..1)
+			float w = 0.95f; // proportional width (0..1)
+			float h = 0.7f; // proportional height (0..1)
+
+			//photoWidth = (int) (w * 0.7f);
+			//photoHeight = (int) (h * 0.7f);
 
 			float xDiff = (Screen.width * w)/2;
 			float yDiff = (Screen.height * h)/2;
@@ -57,8 +65,6 @@ namespace Newspaper
 			windowRect.xMax = (Screen.width/2) + xDiff;
 			windowRect.yMin = (Screen.height/3) - yDiff;
 			windowRect.yMax = (Screen.height/3) + yDiff;
-
-
 
 
 			//nSkin = new NewspaperSkin ();
@@ -86,12 +92,14 @@ namespace Newspaper
 		void OnGUI()
 		{
 			
-
 			if (show)
 			{	
 
 				if (skin == null)
 					createSkin ();
+
+				//if (photoTexture == null)
+				//	photoTexture = NewspaperCamera.instance.getTexture (photoWidth, photoHeight);
 
 				try
 				{
@@ -119,15 +127,15 @@ namespace Newspaper
 				Color bannerBoxTextColor = new Color (0.0f, 0.15f, 0.7f, 1f);
 				bannerBoxStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, fontSize = 12, wordWrap = true, normal = new GUIStyleState { textColor = bannerBoxTextColor, background = bannerBoxes } };
 
+				//photoStyle = new GUIStyle { fontSize = 120, wordWrap = true, normal = new GUIStyleState { textColor = Color.black, background = NewspaperCamera.instance.getTexture() } };
+
 
 				//leave the newspaper on escape key-press
 				if (Input.GetKeyDown (KeyCode.Escape)) {
 					show = false;
 				}
 
-
 				GUISkin oldSkin = GUI.skin;
-
 
 				GUI.skin = skin;
 				windowRect = GUILayout.Window(31521, windowRect, DoConfigWindow, "");
@@ -138,13 +146,25 @@ namespace Newspaper
 
 		public static void Toggle(UIComponent component, UIMouseEventParameter eventParam)
 		{
+			if (instance == null) {
+				UIView uiView = UIView.GetAView ();
+				instance = uiView.gameObject.AddComponent<NewspaperPage2> ();
+				if (instance == null)
+					Debug.Log ("Instance is still null!!");
+			}
+
 			instance.show = !instance.show;
 
 			//generate a new Story only when the newspaper is opened
 			if (instance.show == true) {
 				instance.s = new Story ();
+
+				DateTime dt = SimulationManager.instance.m_currentGameTime;
+				instance.date = String.Format("{0:dddd, MMMM d, yyyy}", dt);
+
 			} else {
 				instance.s = null;
+				//instance.photoTexture = null;
 			}
 		}
 			
@@ -158,8 +178,19 @@ namespace Newspaper
 				GUILayout.BeginVertical();
 
 				GUILayout.Label("The " + Parser.cityName + " Times", bannerStyle);
-				GUILayout.Space (8);
+				GUILayout.Space (2);
 
+
+				GUILayout.BeginHorizontal();
+
+
+				GUILayout.Label(date, boldLabelStyle);
+				GUILayout.Space (80);
+				GUILayout.Label(s.moneyString, boldLabelStyle);
+
+				GUILayout.EndHorizontal();
+
+				GUILayout.Space (2);
 
 				GUILayout.BeginHorizontal();
 
@@ -186,6 +217,7 @@ namespace Newspaper
 
 				GUILayout.BeginVertical();
 				GUILayout.Label(s.headline, headlineStyle);
+				//GUILayout.Box(photoTexture);
 				GUILayout.Space (15);
 				GUILayout.Label("-" + s.reporter + "\n", labelStyle);
 				GUILayout.Label(s.text, labelStyle);
@@ -272,6 +304,7 @@ namespace Newspaper
 			skin.window = new GUIStyle(GUI.skin.window);
 			skin.window.normal.background = texture;
 			skin.window.onNormal.background = texture;
+
 		}
 	}
 } 

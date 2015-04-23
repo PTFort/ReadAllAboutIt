@@ -11,10 +11,16 @@ namespace Newspaper
 
 		//text that should be detected automatically
 		//or stored in a config file
-		public static string cityName = "Sunshine Town";
+
 		public static string[] districts = {"Poplar Hills", "Hemlock Hills"};
-		static string mayorpossess = "his";
-		static string mayorname = "McMayor";
+
+		public static string cityName = "Sunshine Town";
+		static string mayorpossess;
+		static string mayorname;
+
+		public static readonly string configPath = "NewspaperConfig.xml";
+		public Configuration config;
+
 
 		//bound strings to refer to them multiple times in the same story
 		string[] boundNouns = new string[3];
@@ -236,6 +242,10 @@ namespace Newspaper
 			{
 				sourceArr = Data.moveTerms;
 			}
+			else if (type == "WEATHER")
+			{
+				sourceArr = Data.weather;
+			}
 
 			else
 			{
@@ -306,6 +316,12 @@ namespace Newspaper
 				{
 					if (token == "child")
 						token += "ren";
+					else if (token == "potato")
+						token = "potatoes";
+					else if (token == "cactus")
+						token = "catcuses";
+					else if (token.EndsWith ("s"))
+						token = token.Remove (token.Length - 1) + "es";
 					else
 						token += "s";
 				}
@@ -383,6 +399,17 @@ namespace Newspaper
 
 		public Parser()
 		{
+			config = Configuration.Deserialize(configPath);
+			if (config == null) {
+				mayorpossess = "his";
+				mayorname = "McMayor";
+				config = new Configuration ();
+			} else {
+				mayorpossess = config.mayorpossess;
+				mayorname = config.mayorname;
+			}
+
+			Configuration.Serialize(configPath, config);
 		}
 	}
 }

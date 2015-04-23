@@ -19,7 +19,7 @@ namespace Newspaper
 		public string otherArticle1;
 		public string otherArticle2;
 
-
+		public string moneyString;
         Parser p;
 
         public Story()
@@ -33,7 +33,7 @@ namespace Newspaper
             t += Data.templates[index];
 
 			//get the number of the fragments
-            int numFragments = random.Next(3) + 1;
+            int numFragments = random.Next(3);
 
 			//add fragments, but don't repeat them
             ArrayList fragsSelected = new ArrayList();
@@ -55,7 +55,7 @@ namespace Newspaper
 			{
 				parsedString = p.parse (t);
 			}
-			catch(Exception e) {
+			catch(Exception) {
 				parsedString = t + "\nError parsing.";
 			}
 
@@ -74,6 +74,8 @@ namespace Newspaper
 			weather = Data.weather [random.Next (Data.weather.Length)];
 			otherArticle1 = getOtherArticle ();
 			otherArticle2 = getOtherArticle ();
+
+			moneyString = random.Next(5) + 2 + " " + Data.money[random.Next(Data.money.Length)];
         }
 
 
@@ -107,8 +109,6 @@ namespace Newspaper
             }
             return t;
         }
-
-
 
 		public static void Main (string[] args)
 		{

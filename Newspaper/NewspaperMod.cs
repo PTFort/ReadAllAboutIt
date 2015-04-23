@@ -7,20 +7,19 @@ using System;
 using System.Collections;
 using Newspaper;
 
-//taken from https://github.com/AlexanderDzhoganov/Skylines-DynamicResolution/
+//many parts taken from:
+//https://github.com/AlexanderDzhoganov/Skylines-DynamicResolution/
 
 namespace Newspaper
 {
 	public class NewspaperMod : IUserMod
 	{
 		public string Name { get { return "Read All About It"; } }
-		public string Description { get { return "Newspaper mod"; } }
+		public string Description { get { return "This is a newspaper mod in order to re-live the glory days of simulated newspapers in our simulated cities."; } }
 	}
 
 	public class LoadingExtension : LoadingExtensionBase
 	{
-
-
 
 		public override void OnLevelLoaded(LoadMode mode)
 		{
@@ -67,18 +66,17 @@ namespace Newspaper
 //					escbutton.relativePosition.y + escbutton.height / 2.0f - button.height / 2.0f
 //				);
 
-
-			button.transformPosition = new Vector3(0.9f, -0.70f);
+			//set button position
+			button.transformPosition = new Vector3(0.8f, 1f);
 			button.BringToFront();
-			button.eventClick += Newspaper.Toggle; 
+			button.eventClick += NewspaperPage2.Toggle; 
 
 
 			try
 			{
+				
 				//uiView = UIView.GetAView ();
-				//uiView.gameObject
-
-				//uiView = UIView.GetAView ();//hook = uiView.gameObject.AddComponent<Hook>();
+				//hook = uiView.gameObject.AddComponent<Hook>();
 
 				//var controller = GameObject.FindObjectOfType<CameraController>();
 
@@ -93,28 +91,21 @@ namespace Newspaper
 //				if (nObj == null)
 //					Debug.Log ("nObj is null");
 
-				uiView = UIView.GetAView ();//hook = uiView.gameObject.AddComponent<Hook>();
-
-				Newspaper.instance = uiView.gameObject.AddComponent<Newspaper>();
 
 
-				if (Newspaper.instance == null)
+				//uiView = UIView.GetAView ();
+
+				NewspaperPage2.instance = uiView.gameObject.AddComponent<NewspaperPage2>();
+
+				//TODO: Figure out why nulls sometimes appear
+				if (NewspaperPage2.instance == null)
 					Debug.Log ("instance is null!!!");
 
 
-				//Newspaper.NewspaperObj.Initialize();
-
-				// Respond to button click.
-
-
-				//NewspaperObj.Initialize();
 			}catch (Exception e) {
 				Debug.Log (e.Message);
 				Debug.Log (e.StackTrace);
 			}
-
-
-
 
 
 			try
@@ -144,6 +135,7 @@ namespace Newspaper
 					//TODO: Make this not run through the list twice
 					for (int i = 0; i < maxDCount; i++) {
 						String d = dm.GetDistrictName (i);
+
 						//Debug.Log ("District: " + d);
 						if (d != null && ! d.Equals ("")) {
 							dNameArr [index] = d;
@@ -158,6 +150,10 @@ namespace Newspaper
 				Debug.Log (e.Message);
 				Debug.Log (e.StackTrace);
 			}
+
+			//TODO: Make Newspaper camera work
+			//try to start up the newspaper camera
+			//NewspaperCamera.Initialize ();
 
 		}
 
