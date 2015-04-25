@@ -8,11 +8,11 @@ using ColossalFramework.UI;
 
 namespace Newspaper
 {
-	public class NewspaperPage2 : MonoBehaviour
+	public class NewspaperPage : MonoBehaviour
 	{
 		public static System.Random random = new System.Random();
 
-		public static NewspaperPage2 instance;
+		public static NewspaperPage instance;
 		public static bool b = true;
 		public bool show = false;
 		private Rect windowRect;
@@ -46,25 +46,7 @@ namespace Newspaper
 
 			//TODO: Move this to NewspaperSkin
 
-			float w = 0.95f; // proportional width (0..1)
-			float h = 0.7f; // proportional height (0..1)
 
-			//photoWidth = (int) (w * 0.7f);
-			//photoHeight = (int) (h * 0.7f);
-
-			float xDiff = (Screen.width * w)/2;
-			float yDiff = (Screen.height * h)/2;
-
-			if (xDiff > 300)
-				xDiff = 300;
-
-			
-			windowRect = new Rect ();
-
-			windowRect.xMin = (Screen.width/2) - xDiff;
-			windowRect.xMax = (Screen.width/2) + xDiff;
-			windowRect.yMin = (Screen.height/3) - yDiff;
-			windowRect.yMax = (Screen.height/3) + yDiff;
 
 
 			//nSkin = new NewspaperSkin ();
@@ -83,8 +65,6 @@ namespace Newspaper
 			bannerBoxes.SetPixel (0, 0, new Color(0.90f, 0.90f, 0.98f, 1f));
 			bannerBoxes.Apply ();
 
-
-
 		}
 			
 
@@ -97,6 +77,30 @@ namespace Newspaper
 
 				if (skin == null)
 					createSkin ();
+
+				float w = 0.95f; // proportional width (0..1)
+				float h = 0.7f; // proportional height (0..1)
+
+				//photoWidth = (int) (w * 0.7f);
+				//photoHeight = (int) (h * 0.7f);
+
+				float xDiff = (Screen.width * w)/2;
+				float yDiff = (Screen.height * h)/2;
+
+				if (xDiff > 300)
+					xDiff = 300;
+
+				if (yDiff > 300)
+					yDiff = 300;
+
+
+				windowRect = new Rect ();
+
+				windowRect.xMin = (Screen.width/2) - xDiff;
+				windowRect.xMax = (Screen.width/2) + xDiff;
+				windowRect.yMin = (Screen.height * 0.4f) - yDiff;
+				windowRect.yMax = (Screen.height * 0.4f) + yDiff;
+
 
 				//if (photoTexture == null)
 				//	photoTexture = NewspaperCamera.instance.getTexture (photoWidth, photoHeight);
@@ -125,7 +129,7 @@ namespace Newspaper
 				barStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Italic, fontSize = 6, wordWrap = true, normal = new GUIStyleState { textColor = Color.black, background = bgTexture } };
 
 				Color bannerBoxTextColor = new Color (0.0f, 0.15f, 0.7f, 1f);
-				bannerBoxStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, fontSize = 12, wordWrap = true, normal = new GUIStyleState { textColor = bannerBoxTextColor, background = bannerBoxes } };
+				bannerBoxStyle = new GUIStyle { alignment = TextAnchor.MiddleCenter, border = new RectOffset(1, 1, 1, 1), fontSize = 12, wordWrap = true, normal = new GUIStyleState { textColor = bannerBoxTextColor, background = bannerBoxes } };
 
 				//photoStyle = new GUIStyle { fontSize = 120, wordWrap = true, normal = new GUIStyleState { textColor = Color.black, background = NewspaperCamera.instance.getTexture() } };
 
@@ -148,7 +152,7 @@ namespace Newspaper
 		{
 			if (instance == null) {
 				UIView uiView = UIView.GetAView ();
-				instance = uiView.gameObject.AddComponent<NewspaperPage2> ();
+				instance = uiView.gameObject.AddComponent<NewspaperPage> ();
 				if (instance == null)
 					Debug.Log ("Instance is still null!!");
 			}
@@ -172,33 +176,36 @@ namespace Newspaper
 		{
 			try{
 				
-				GUILayout.Height (10);
+				//GUILayout.Height (10);
+
+				GUILayout.MaxWidth(400);
+				GUILayout.MaxHeight(300);
 
 				GUILayout.ExpandHeight (true);
 				GUILayout.BeginVertical();
 
 				GUILayout.Label("The " + Parser.cityName + " Times", bannerStyle);
-				GUILayout.Space (2);
+				GUILayout.Space (3);
 
 
 				GUILayout.BeginHorizontal();
 
 
 				GUILayout.Label(date, boldLabelStyle);
-				GUILayout.Space (80);
+				GUILayout.FlexibleSpace();
 				GUILayout.Label(s.moneyString, boldLabelStyle);
 
 				GUILayout.EndHorizontal();
 
-				GUILayout.Space (2);
+				GUILayout.Space (3);
 
 				GUILayout.BeginHorizontal();
 
-				GUILayout.Label("Weather: " + s.weather, bannerBoxStyle);
+				GUILayout.Box("Weather: " + s.weather, bannerBoxStyle);
 				GUILayout.Space (10);
-				GUILayout.Label(s.otherArticle1, bannerBoxStyle);
+				GUILayout.Box(s.otherArticle1, bannerBoxStyle);
 				GUILayout.Space (10);
-				GUILayout.Label(s.otherArticle2, bannerBoxStyle);
+				GUILayout.Box(s.otherArticle2, bannerBoxStyle);
 
 				GUILayout.EndHorizontal();
 
@@ -218,7 +225,7 @@ namespace Newspaper
 				GUILayout.BeginVertical();
 				GUILayout.Label(s.headline, headlineStyle);
 				//GUILayout.Box(photoTexture);
-				GUILayout.Space (15);
+				GUILayout.Space (12);
 				GUILayout.Label("-" + s.reporter + "\n", labelStyle);
 				GUILayout.Label(s.text, labelStyle);
 				GUILayout.EndVertical();
@@ -268,7 +275,8 @@ namespace Newspaper
 
 		public void createSkin()
 		{
-			Texture2D bgTexture = new Texture2D(1, 1);
+
+			bgTexture = new Texture2D(1, 1);
 			bgTexture.SetPixel(0, 0, Color.grey);
 			bgTexture.Apply();
 

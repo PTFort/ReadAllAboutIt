@@ -246,6 +246,10 @@ namespace Newspaper
 			{
 				sourceArr = Data.weather;
 			}
+			else if (type == "MONEY")
+			{
+				sourceArr = Data.money;
+			}
 
 			else
 			{

@@ -61,7 +61,7 @@
     <Compile Include="NewspaperPanel.cs" />
     <Compile Include="NewspaperCamera.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="NewspaperPage2.cs" />
+    <Compile Include="NewspaperPage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

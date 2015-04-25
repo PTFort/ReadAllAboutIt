@@ -67,9 +67,9 @@ namespace Newspaper
 //				);
 
 			//set button position
-			button.transformPosition = new Vector3(0.8f, 1f);
+			button.transformPosition = new Vector3(0.8f, 0.95f);
 			button.BringToFront();
-			button.eventClick += NewspaperPage2.Toggle; 
+			button.eventClick += NewspaperPage.Toggle; 
 
 
 			try
@@ -95,10 +95,10 @@ namespace Newspaper
 
 				//uiView = UIView.GetAView ();
 
-				NewspaperPage2.instance = uiView.gameObject.AddComponent<NewspaperPage2>();
+				NewspaperPage.instance = uiView.gameObject.AddComponent<NewspaperPage>();
 
 				//TODO: Figure out why nulls sometimes appear
-				if (NewspaperPage2.instance == null)
+				if (NewspaperPage.instance == null)
 					Debug.Log ("instance is null!!!");
 
 
